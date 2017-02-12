@@ -52,26 +52,6 @@ class ViewController: UIViewController {
     @IBAction func makeCall(){
        
         
-        //let tips = Tips(map: Map())
-        
-        //self.makeCall(tips)
-        
-      //  self.makeCallz()
-        
-        /*
-        self.networkCall(
-            successBlock: { tips in
-                print(tips.name)
-            }, errorBlock: { error in
-                print(error)
-            }, failureBlock: {
-                print("Failure")
-            }, plugins: [LoadingViewPlugin(viewController: self),
-                         AlertViewPlugin(viewController: self)]
-        )
-        */
-        
-        
         self.networkCall(
             item: Tips.self,
             url: TipsAPI.getTips,
@@ -83,7 +63,9 @@ class ViewController: UIViewController {
                 print("Failure")
             }, plugins: [LoadingViewPlugin(viewController: self), AlertViewPlugin(viewController: self)]
         )
-
+        
+        
+        
         self.networkCall(
             item: Operation.self,
             url: OperationAPI.getOperation,
@@ -101,12 +83,24 @@ class ViewController: UIViewController {
     
     
     
+    
+    // Bloc par défaut, aucune action
+    static func emptyErrorClosure() -> ((String) -> ()) {
+        return { name in "" }
+    }
+    
+    static func emptyFailureClosure() -> (() -> ()) {
+        return {}
+    }
+    
+    
+    // TODO: Cleanup / Param Order
     func networkCall<T: SWGOutput>(
         item: T.Type,
         url: URLRequestConvertible,
         successBlock: @escaping (_ tips: T) -> (),
-                     errorBlock: @escaping (_ errorMessage: String) -> (),
-                     failureBlock: @escaping () -> (),
+                     errorBlock: @escaping (_ errorMessage: String) -> () = ViewController.emptyErrorClosure(),
+                     failureBlock: @escaping () -> () = ViewController.emptyFailureClosure(),
                      plugins: [Plugin] = [])
     {
         

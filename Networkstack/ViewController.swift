@@ -55,7 +55,7 @@ class ViewController: UIViewController {
                 print(error)
             }, failureBlock: {
                 print("Failure")
-            }
+            }, plugins: [LoadingViewPlugin(viewController: self)]
         )
         
         
@@ -110,12 +110,16 @@ class ViewController: UIViewController {
     
     func networkCall(successBlock: @escaping (_ tips: Tips) -> (),
                      errorBlock: @escaping (_ errorMessage: String) -> (),
-                     failureBlock: @escaping () -> ())
+                     failureBlock: @escaping () -> (),
+                     plugins: [Plugin] = [])
     {
+        
+    
+        plugins.forEach({$0.willSendRequest()})
+        
         
     //    let url = "http://localhost:8000/tips"
         let url = "http://46.101.228.22:3000/api/operations"
-        
         
         
         Alamofire.request(url).responseObject {(response: DataResponse<Tips>) in
@@ -139,26 +143,69 @@ class ViewController: UIViewController {
                         }
                     }
                 }
-                return
-            }
-            
-            
-            
-            let resp = response.result.value
-            if (resp?.error != nil) {
-                errorBlock((resp?.error!)!)
             } else {
-                // Success
-                successBlock(resp!)
+                
+                let resp = response.result.value
+                if (resp?.error != nil) {
+                    errorBlock((resp?.error!)!)
+                } else {
+                    // Success
+                    successBlock(resp!)
+                }
             }
             
         }
         
-
-        
+        plugins.forEach({$0.requestDidFinished(statut: .error)})
+            
         
     }
     
-
 }
+
+enum IDPRequestStatut {
+    
+    case success
+    case error
+    case network
+    
+    
+}
+
+protocol Plugin {
+    
+    
+    func willSendRequest()
+    func requestDidFinished(statut: IDPRequestStatut)
+    
+    
+}
+
+/// Default implementation so each method is optional
+extension Plugin {
+
+    func willSendRequest() {}
+    func requestDidFinished(statut: IDPRequestStatut) {}
+    
+}
+
+class LoadingViewPlugin: Plugin {
+    
+    let viewController: ViewController
+    
+    init(viewController: ViewController){
+        self.viewController = viewController
+    }
+    
+    func willSendRequest() {
+        viewController.showLoadingView()
+    }
+    
+    func requestDidFinished(statut: IDPRequestStatut) {
+        viewController.hideLoadingView()
+    }
+    
+    
+}
+
 

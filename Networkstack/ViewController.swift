@@ -34,6 +34,14 @@ class ViewController: UIViewController {
         self.loadingView.removeFromSuperview()
     }
 
+    
+    func showAlertView(message: String){
+        let alert = UIAlertController(title: "Test", message: message, preferredStyle: .alert)
+        let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alert.addAction(action)
+        self.present(alert, animated: true, completion: nil)
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -55,7 +63,8 @@ class ViewController: UIViewController {
                 print(error)
             }, failureBlock: {
                 print("Failure")
-            }, plugins: [LoadingViewPlugin(viewController: self)]
+            }, plugins: [LoadingViewPlugin(viewController: self),
+                         AlertViewPlugin(viewController: self)]
         )
         
         
@@ -153,23 +162,16 @@ class ViewController: UIViewController {
                     successBlock(resp!)
                 }
             }
-            
+   
+            plugins.forEach({$0.requestDidFinished(statut: .error("err"))})
         }
-        
-        plugins.forEach({$0.requestDidFinished(statut: .error)})
-            
-        
     }
-    
 }
 
 enum IDPRequestStatut {
-    
     case success
-    case error
+    case error(String)
     case network
-    
-    
 }
 
 protocol Plugin {
@@ -204,8 +206,23 @@ class LoadingViewPlugin: Plugin {
     func requestDidFinished(statut: IDPRequestStatut) {
         viewController.hideLoadingView()
     }
-    
-    
 }
 
+class AlertViewPlugin: Plugin {
+    
+    let viewController: ViewController
+    
+    init(viewController: ViewController){
+        self.viewController = viewController
+    }
+    
+    func requestDidFinished(statut: IDPRequestStatut) {
+    
+        switch statut {
+        case .error, .network:
+            viewController.showAlertView(message: "YOLO")
+        default: break
+        }
+    }
+}
 

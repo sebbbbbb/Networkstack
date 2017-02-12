@@ -15,6 +15,9 @@
 		96746CE51E50A8D000E782C7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 96746CE31E50A8D000E782C7 /* LaunchScreen.storyboard */; };
 		96746CED1E50AE5200E782C7 /* Tips.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96746CEC1E50AE5200E782C7 /* Tips.swift */; };
 		96746CF01E50B5B100E782C7 /* SWGOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96746CEF1E50B5B100E782C7 /* SWGOutput.swift */; };
+		96746CF21E50E9DC00E782C7 /* TipsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96746CF11E50E9DC00E782C7 /* TipsAPI.swift */; };
+		96746CF41E50F0EF00E782C7 /* Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96746CF31E50F0EF00E782C7 /* Operations.swift */; };
+		96746CF61E5108AC00E782C7 /* OperationAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96746CF51E5108AC00E782C7 /* OperationAPI.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +32,9 @@
 		96746CE61E50A8D000E782C7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		96746CEC1E50AE5200E782C7 /* Tips.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tips.swift; sourceTree = "<group>"; };
 		96746CEF1E50B5B100E782C7 /* SWGOutput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SWGOutput.swift; sourceTree = "<group>"; };
+		96746CF11E50E9DC00E782C7 /* TipsAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TipsAPI.swift; sourceTree = "<group>"; };
+		96746CF31E50F0EF00E782C7 /* Operations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operations.swift; sourceTree = "<group>"; };
+		96746CF51E5108AC00E782C7 /* OperationAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationAPI.swift; sourceTree = "<group>"; };
 		EC5A36664F8CCF70A52CAC69 /* Pods_Networkstack.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Networkstack.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -73,6 +79,9 @@
 				96746CE31E50A8D000E782C7 /* LaunchScreen.storyboard */,
 				96746CE61E50A8D000E782C7 /* Info.plist */,
 				96746CEC1E50AE5200E782C7 /* Tips.swift */,
+				96746CF11E50E9DC00E782C7 /* TipsAPI.swift */,
+				96746CF31E50F0EF00E782C7 /* Operations.swift */,
+				96746CF51E5108AC00E782C7 /* OperationAPI.swift */,
 			);
 			path = Networkstack;
 			sourceTree = "<group>";
@@ -228,7 +237,10 @@
 				96746CF01E50B5B100E782C7 /* SWGOutput.swift in Sources */,
 				96746CDD1E50A8D000E782C7 /* ViewController.swift in Sources */,
 				96746CDB1E50A8D000E782C7 /* AppDelegate.swift in Sources */,
+				96746CF41E50F0EF00E782C7 /* Operations.swift in Sources */,
+				96746CF21E50E9DC00E782C7 /* TipsAPI.swift in Sources */,
 				96746CED1E50AE5200E782C7 /* Tips.swift in Sources */,
+				96746CF61E5108AC00E782C7 /* OperationAPI.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

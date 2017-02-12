@@ -18,20 +18,22 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+   
+        self.loadingView = UIActivityIndicatorView(frame: CGRect(x: 100, y: 100, width: 100, height: 100))
+        self.loadingView.color = UIColor.blue
+        self.view.addSubview(self.loadingView)
         
         
     }
     
     func showLoadingView(){
-        self.loadingView = UIActivityIndicatorView(frame: CGRect(x: 100, y: 100, width: 100, height: 100))
-        self.loadingView.color = UIColor.blue
-        self.view.addSubview(self.loadingView)
         self.loadingView.startAnimating()
-        
+        self.loadingView.isHidden = false
     }
     
     func hideLoadingView(){
-        self.loadingView.removeFromSuperview()
+        self.loadingView.stopAnimating()
+        self.loadingView.isHidden = true
     }
 
     
@@ -56,6 +58,7 @@ class ViewController: UIViewController {
         
       //  self.makeCallz()
         
+        /*
         self.networkCall(
             successBlock: { tips in
                 print(tips.name)
@@ -66,58 +69,42 @@ class ViewController: UIViewController {
             }, plugins: [LoadingViewPlugin(viewController: self),
                          AlertViewPlugin(viewController: self)]
         )
+        */
         
         
-        
-    }
-    
-    
-    func makeCallz(){
-        //let url = "http://localhost:8000/tips"
-        let url = "http://46.101.228.22:3000/api/operations"
-        
-        
-        Alamofire.request(url).responseObject {(response: DataResponse<Tips>) in
-            
-            let responseStatusCode = response.response?.statusCode
-            
-            if let error =  response.error {
-                print(error._code)
-                
-                if error._code == -1001 || error._code == -1009 || error._code == -1004{
-                    print("Network failure")
-                }else {
-                    
-                    if let statusCode = responseStatusCode {
-                        
-                        if statusCode == 500 {
-                            print("Server is fucked up")
-                        } else if statusCode == 412 {
-                            
-                        }
-                    }
-                }
-                return
-            }
-            
-            
-            
-            let resp = response.result.value
-            if (resp?.error != nil) {
-                // Erreur
-                print("200 with error")
-            } else {
-                // Success
-                print("200 Success")
-                
-            }
-      
-        }
-        
-    }
+        self.networkCall(
+            item: Tips.self,
+            url: TipsAPI.getTips,
+            successBlock: { tips in
+                print(tips.name)
+            }, errorBlock: { error in
+                print(error)
+            }, failureBlock: {
+                print("Failure")
+            }, plugins: [LoadingViewPlugin(viewController: self), AlertViewPlugin(viewController: self)]
+        )
 
+        self.networkCall(
+            item: Operation.self,
+            url: OperationAPI.getOperation,
+            successBlock: { operation in
+                print(operation.valeur)
+            }, errorBlock: { error in
+                print(error)
+            }, failureBlock: {
+                print("Failure")
+            }, plugins: [LoadingViewPlugin(viewController: self), AlertViewPlugin(viewController: self)]
+        )
+
+        
+    }
     
-    func networkCall(successBlock: @escaping (_ tips: Tips) -> (),
+    
+    
+    func networkCall<T: SWGOutput>(
+        item: T.Type,
+        url: URLRequestConvertible,
+        successBlock: @escaping (_ tips: T) -> (),
                      errorBlock: @escaping (_ errorMessage: String) -> (),
                      failureBlock: @escaping () -> (),
                      plugins: [Plugin] = [])
@@ -126,12 +113,7 @@ class ViewController: UIViewController {
     
         plugins.forEach({$0.willSendRequest()})
         
-        
-    //    let url = "http://localhost:8000/tips"
-        let url = "http://46.101.228.22:3000/api/operations"
-        
-        
-        Alamofire.request(url).responseObject {(response: DataResponse<Tips>) in
+        Alamofire.request(url).responseObject {(response: DataResponse<T>) in
             
             let responseStatusCode = response.response?.statusCode
             
@@ -163,7 +145,7 @@ class ViewController: UIViewController {
                 }
             }
    
-            plugins.forEach({$0.requestDidFinished(statut: .error("err"))})
+            plugins.forEach({$0.requestDidFinished(statut: .success)})
         }
     }
 }
